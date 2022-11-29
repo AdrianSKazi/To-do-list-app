@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title>To Do list</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+  <div class="box" id = 'heading'>
+    <h1> <%= day_ejs %></h1>
+  </div>
+
+
+  <div class="box">
+
+
+      <!-- <li>one</li>
+      <li>two</li>
+      <li>three</li> -->
+
+      <%  for (var i = 0; i < items_ejs.length; i++) { %>
+        <div class="item">
+            <input type="checkbox">
+            <p> <%= items_ejs[i] %></p>
+        </div>
+
+      <%  }  %>
+
+      <form class="item" action="/" method="post">
+        <input type="text" name="newItem" placeholder="New Item" autocomplete = 'off'>
+
+        <button type="submit" name="button">+</button>
+      </form>
+
+  </div>
+
+
+
+
+</body>
+
+</html>
