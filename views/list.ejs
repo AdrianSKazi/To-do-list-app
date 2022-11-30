@@ -1,15 +1,17 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en" dir="ltr">
 
 <head>
   <meta charset="utf-8">
   <title>To Do list</title>
   <link rel="stylesheet" href="css/styles.css">
-</head>
+</head> -->
+
+<%- include("header"); -%>
 
 <body>
   <div class="box" id = 'heading'>
-    <h1> <%= day_ejs %></h1>
+    <h1> <%= list_title_ejs %></h1>
   </div>
 
 
@@ -31,14 +33,17 @@
       <form class="item" action="/" method="post">
         <input type="text" name="newItem" placeholder="New Item" autocomplete = 'off'>
 
-        <button type="submit" name="button">+</button>
+        <button type="submit" name="list" value = <%= list_title_ejs %>>+</button>
       </form>
 
   </div>
 
-
-
-
 </body>
+
+<%- include("footer"); -%>
+
+<!-- <footer>
+  Copyright 2022 Adrian Kazi
+</footer> -->
 
 </html>
