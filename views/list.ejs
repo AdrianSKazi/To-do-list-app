@@ -22,13 +22,15 @@
       <li>two</li>
       <li>three</li> -->
 
-      <%  for (var i = 0; i < items_ejs.length; i++) { %>
-        <div class="item">
-            <input type="checkbox">
-            <p> <%= items_ejs[i] %></p>
-        </div>
+      <%  items_ejs.forEach((item) => { %>
 
-      <%  }  %>
+            <div class="item">
+              <input type="checkbox">
+              <p> <%= item.name %></p>
+            </div>
+
+      <%  }); %>
+
 
       <form class="item" action="/" method="post">
         <input type="text" name="newItem" placeholder="New Item" autocomplete = 'off'>
