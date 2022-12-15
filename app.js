@@ -47,6 +47,7 @@ const task3 = new Item({
 });
 
 const items = [task1, task2, task3];
+// const items = [];
 
 
 
@@ -117,6 +118,30 @@ app.post('/', (req, res) => {
   res.redirect('/');
   // }
 });
+
+
+
+
+
+
+// POST DELETE
+
+app.post('/delete', (req, res) => {
+
+  const deletedItemId = req.body.checkbox;
+
+  Item.deleteOne({'_id': deletedItemId}, (err) => {
+    if (err){
+      console.log('Error on deleteOne item');
+    } else {
+      console.log('Success on deleteOne item');
+      res.redirect('/');
+    }
+  })
+
+});
+
+
 
 
 

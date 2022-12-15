@@ -23,12 +23,14 @@
       <li>three</li> -->
 
       <%  items_ejs.forEach((item) => { %>
+            <form class="" action="/delete" method="post">
 
-            <div class="item">
-              <input type="checkbox">
-              <p> <%= item.name %></p>
-            </div>
 
+              <div class="item">
+                <input type="checkbox" name = "checkbox" value = "<%= item._id %>" onChange = 'this.form.submit()'>
+                <p> <%= item.name %></p>
+              </div>
+            </form>
       <%  }); %>
 
 
