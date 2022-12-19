@@ -5,6 +5,7 @@ const ejs = require('ejs');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 mongoose.set('strictQuery', false);
+const _ = require('lodash');
 const app = express();
 app.set('view engine', "ejs");
 const port = 3000;
@@ -33,7 +34,6 @@ const itemsSchema = {
 
 const Item = mongoose.model("Item", itemsSchema);
 
-
 const task1 = new Item({
   name: "Clean the room"
 });
@@ -47,7 +47,22 @@ const task3 = new Item({
 });
 
 const items = [task1, task2, task3];
+
 // const items = [];
+
+
+
+
+
+
+// List mongoose
+
+const listSchema = {
+  name: String,
+  items: [itemsSchema]
+};
+
+const List = mongoose.model("List", listSchema);
 
 
 
@@ -62,6 +77,8 @@ app.get('/', (req, res) => {
 
   // const day = date.getDay();
   // const day = date.getDate();
+
+
 
   Item.find({}, function(err, foundItems){
 
@@ -86,7 +103,53 @@ app.get('/', (req, res) => {
       });
     }
   });
+
+
+
+
+
+
 });
+
+
+
+
+
+
+// GET ABOUT
+
+app.get('/:customListName', (req, res) => {
+    const customListName = _.capitalize(req.params.customListName);
+
+    List.findOne({name: customListName}, (err, foundList) => {
+
+        if (!err){
+
+          if (!foundList){
+
+              const list = new List({
+                name: customListName,
+                items: items
+              });
+
+              list.save();
+
+              res.redirect('/' + customListName);
+
+          } else {
+              res.render("list", {
+              list_title_ejs : foundList.name,
+              items_ejs : foundList.items
+            });
+          }
+        }
+    });
+});
+
+
+
+
+
 
 
 
@@ -95,28 +158,27 @@ app.get('/', (req, res) => {
 
 app.post('/', (req, res) => {
 
-  // const item = new Item({
-  //   name: req.body.newItem
-  // });
+          const itemName = req.body.newItem;
+          const listName = req.body.list;
 
-  // if (req.body.list === 'Work') {
-  //   items.push(item);
-  //   res.redirect('/work');
-  // }
-  // else {
+          const item = new Item({
+            name: itemName
+          });
 
-  const item = new Item({name: req.body.newItem}, (err) => {
-    if (err){
-      console.log('Error on item push');
-    } else {
-      console.log('Success on item push');
-    }
-  });
 
-  item.save();
 
-  res.redirect('/');
-  // }
+          if (listName === 'Today'){
+            item.save();
+            res.redirect('/');
+          }
+          else {
+            List.findOne({name: listName}, function(err, foundList){
+              foundList.items.push(item);
+              foundList.save();
+              res.redirect('/' + listName);
+            })
+          }
+
 });
 
 
@@ -128,17 +190,34 @@ app.post('/', (req, res) => {
 
 app.post('/delete', (req, res) => {
 
-  const deletedItemId = req.body.checkbox;
+  const checkedItemId = req.body.checkbox;
+  const listName = req.body.listName;
 
-  Item.deleteOne({'_id': deletedItemId}, (err) => {
-    if (err){
-      console.log('Error on deleteOne item');
-    } else {
-      console.log('Success on deleteOne item');
-      res.redirect('/');
-    }
-  })
 
+  if (listName === 'Today'){
+        Item.deleteOne({'_id': checkedItemId}, (err) => {
+              if (err){
+                console.log('Error on deleteOne item');
+              } else {
+                console.log('Success on deleteOne item');
+                res.redirect('/');
+              }
+        });
+  }
+
+  else {
+
+    // DO ZMIANY
+              List.findOneAndUpdate({name: listName},
+                                    {$pull: {items: {_id:checkedItemId}}},
+                                    (err, foundList) => {
+                                                          if (!err) {
+                                                            res.redirect('/' + listName);
+                                                          }
+              });
+    // DO ZMIANY
+
+      }
 });
 
 
@@ -146,25 +225,11 @@ app.post('/delete', (req, res) => {
 
 
 
-// GET WORK
-// const items = [];
-const workItems = [];
-
-app.get('/work', (req, res) => {
-  res.render("list", {
-    list_title_ejs : "Work To-do",
-    items_ejs : workItems,
-  });
-})
 
 
 
 
-// GET ABOUT
 
-app.get('/about', (req, res) => {
-  res.render('about')
-});
 
 
 
