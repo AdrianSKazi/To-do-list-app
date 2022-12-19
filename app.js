@@ -26,7 +26,7 @@ app.use(express.static('public'));
 
 // Mongoose
 
-mongoose.connect('mongodb://localhost:27017/todolistDB');
+mongoose.connect('mongodb+srv://admin-adrian:Mongodb!ammn!A!wb!94@cluster0.oaxlz4o.mongodb.net/?retryWrites=true&w=majority');
 
 const itemsSchema = {
   name: String,
