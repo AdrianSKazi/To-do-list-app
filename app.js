@@ -8,9 +8,8 @@ mongoose.set('strictQuery', false);
 const _ = require('lodash');
 const app = express();
 app.set('view engine', "ejs");
-const PORT = process.env.PORT;
 
-let port = PORT;
+let port = process.env.PORT;
 if (port == null || port == "") {
   port = 8000;
 }
