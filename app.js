@@ -8,10 +8,16 @@ mongoose.set('strictQuery', false);
 const _ = require('lodash');
 const app = express();
 app.set('view engine', "ejs");
-const port = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000;
 
 
-
+express()
+  .use(express.static(path.join(__dirname, 'public')))
+  .set('views', path.join(__dirname, 'views'))
+  .set('view engine', 'ejs')
+  .get('/', (req, res) => res.render('pages/index'))
+  .get('/cool', (req, res) => res.send(cool()))
+  .listen(PORT, () => console.log(`Listening on ${ PORT }`));
 
 // APP
 
@@ -235,6 +241,6 @@ app.post('/delete', (req, res) => {
 
 // LISTEN
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
+app.listen(PORT, () => {
+  console.log(`Example app listening on port ${PORT}`)
 });
