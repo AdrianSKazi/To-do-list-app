@@ -8,7 +8,12 @@ mongoose.set('strictQuery', false);
 const _ = require('lodash');
 const app = express();
 app.set('view engine', "ejs");
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT;
+
+let port = PORT;
+if (port == null || port == "") {
+  port = 8000;
+}
 
 // APP
 
@@ -219,19 +224,8 @@ app.post('/delete', (req, res) => {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 // LISTEN
 
-app.listen(PORT, () => {
-  console.log(`Example app listening on port ${PORT}`)
+app.listen(port, () => {
+  console.log(`Example app listening on port ${port}`)
 });
